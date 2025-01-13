@@ -27,5 +27,14 @@ pipeline {
                 }
             }
         }
+        stage('Test Code') {
+            steps {
+                // Pytest code
+                script {
+                    echo 'Testing Python Code...'
+                    sh "pytest tests/"
+                }
+            }
+        }
     }
 }
