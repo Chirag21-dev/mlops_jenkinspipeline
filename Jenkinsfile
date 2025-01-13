@@ -45,5 +45,14 @@ pipeline {
                 }
             }
         }
+        stage('Push Docker Image') {
+            steps {
+                // Push Docker Image to DockerHub
+                script {
+                    echo 'Pushing Docker Image to DockerHub...'
+                    docker.withRegistry("${DOCKERHUB_REGISTRY}", "${DOCKERHUB_CREDENTIAL_ID}"){
+                        dockerImage.push('latest')
+                    }
+                }
     }
 }
