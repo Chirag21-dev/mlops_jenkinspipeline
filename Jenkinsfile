@@ -3,7 +3,7 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIAL_ID = 'mlops-jenkins-dockerhub-token'
         DOCKERHUB_REGISTRY = 'https://registry.hub.docker.com'
-        DOCKERHUB_REPOSITORY = 'iquantc/mlops-proj-01'
+        DOCKERHUB_REPOSITORY = 'chiragks1/mlops-proj-01'
     }
     stages {
         stage('Clone Repository') {
@@ -36,12 +36,12 @@ pipeline {
                 }
             }
         }
-        stage('Trivy FS Scan') {
+        stage('Build Docker Image') {
             steps {
-                // Trivy Filesystem Scan
+                // Build Docker Image
                 script {
-                    echo 'Scannning Filesystem with Trivy...'
-                    sh "trivy fs . --format table -o trivy-fs-report.html"
+                    echo 'Building Docker Image...'
+                    dockerImage = docker.build("${DOCKERHUB_REPOSITORY}:latest") 
                 }
             }
         }
