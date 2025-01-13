@@ -4,6 +4,9 @@ pipeline {
         DOCKERHUB_CREDENTIAL_ID = 'mlops-jenkins-dockerhub-token'
         DOCKERHUB_REGISTRY = 'https://registry.hub.docker.com'
         DOCKERHUB_REPOSITORY = 'chiragks1/mlops-proj-01'
+        PROJECT_ID = 'galvanized-case-436204-b0'
+        REGION = 'us-central1'
+        SERVICE_NAME='mlops-jenkins'
     }
     stages {
         stage('Clone Repository') {
@@ -56,5 +59,19 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to Cloud Run') {
+            steps {
+                script {
+                    sh """
+                    gcloud auth configure-docker
+                    gcloud run deploy ${SERVICE_NAME} \
+                        --image dockerImage \
+                        --platform managed \
+                        --region ${REGION} \
+                        --allow-unauthenticated \
+                        --project ${PROJECT_ID}
+                    """
+                }
+            }
     }
 }
